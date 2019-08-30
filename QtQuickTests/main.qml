@@ -8,9 +8,10 @@ Window {
     height: 480
     title: qsTr("Hello World")
 
-    BackgroundForm {
-        id: backgroundForm
+    Background {
+        id: background
         anchors.fill: parent
+        target : sender
 
         Sender {
             id: sender
@@ -32,6 +33,7 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 50
+            width: sender.width
         }
     }
 
