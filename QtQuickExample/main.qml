@@ -46,11 +46,39 @@ ApplicationWindow {
                         target: page.icon
                         x: page.bottomLeftRect.x
                         y: page.bottomLeftRect.y
-
                     }
                 }
             ]
+
+            transitions: [
+                Transition {
+                    from: "*"
+                    to: "State1"
+                    NumberAnimation {
+                        property: "x,y"
+                        duration: 1000
+                        easing.type: Easing.OutBounce
+                    }
+                },
+                Transition {
+                    from: "*"
+                    to: "State2"
+                    NumberAnimation {
+                        properties: "x,y"
+                        duration: 2000
+                        easing.type: Easing.InOutQuad
+                    }
+                },
+                Transition {
+                    NumberAnimation {
+                        properties: "x,y"
+                        duration: 200
+                    }
+
+                }
+            ]
         }
+
 
         Page2Form {
         }
