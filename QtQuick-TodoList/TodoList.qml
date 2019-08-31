@@ -23,8 +23,10 @@ Frame {
         delegate: RowLayout {
             width: parent.width
             CheckBox {
+                checked: model.done
             }
             TextField {
+                text: model.description
                 Layout.fillWidth: true
             }
         }
