@@ -7,6 +7,7 @@ Frame {
     ListView {
         implicitWidth: 250
         implicitHeight: 250
+        clip: true
 
         model: 100
         delegate: RowLayout {
