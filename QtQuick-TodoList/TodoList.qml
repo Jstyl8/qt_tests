@@ -37,10 +37,12 @@ ColumnLayout
     RowLayout {
         Button {
             text: qsTr(("Add new item  "));
+            onClicked:  todoList.appendItem();
             Layout.fillWidth: true
         }
         Button {
             text: qsTr("Remove completed  ");
+            onClicked:  todoList.removeCompletedItems()
             Layout.fillWidth: true
         }
     }
