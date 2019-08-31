@@ -24,9 +24,11 @@ Frame {
             width: parent.width
             CheckBox {
                 checked: model.done
+                onClicked: model.done = checked
             }
             TextField {
                 text: model.description
+                onEditingFinished: model.description = text
                 Layout.fillWidth: true
             }
         }
