@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<TodoModel>("Todo", 1, 0, "TodoModel");
+    qmlRegisterUncreatableType<TodoList>("Todo", 1, 0, "TodoList",
+                                         QStringLiteral("TodoList should not be created in QML"));
 
     TodoList todoList;
 

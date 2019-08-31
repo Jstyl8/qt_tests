@@ -1,7 +1,8 @@
 #include "todomodel.h"
-
+#include "todolist.h"
 TodoModel::TodoModel(QObject *parent)
     : QAbstractListModel(parent)
+    , mList(nullptr)
 {
 }
 
@@ -9,32 +10,45 @@ int TodoModel::rowCount(const QModelIndex &parent) const
 {
     // For list models only the root node (an invalid parent) should return the list's size. For all
     // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
-    if (parent.isValid())
+    if (parent.isValid() || !mList)
         return 0;
 
-    // FIXME: Implement me!
-    return 100;
+    return mList->items().size();
 }
 
 QVariant TodoModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || !mList)
         return QVariant();
 
-    // FIXME: Implement me!
+    const TodoItem item = mList->items().at(index.row());
+
     switch (role) {
     case DoneRole:
-        return QVariant(false);
+        return QVariant(item.done);
     case DescriptionRole:
-        return QVariant(QStringLiteral("Text Description"));
+        return QVariant(item.description);
     }
     return QVariant();
 }
 
 bool TodoModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (data(index, role) != value) {
-        // FIXME: Implement me!
+    if(!mList)
+        return false;
+
+    TodoItem item = mList->items().at(index.row());
+
+    switch (role) {
+    case DoneRole:
+        item.done = value.toBool();
+        break;
+    case DescriptionRole:
+        item.description = value.toString();
+        break;
+    }
+
+    if (mList->setItemAt(index.row(), item)) {
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
     }
@@ -43,10 +57,10 @@ bool TodoModel::setData(const QModelIndex &index, const QVariant &value, int rol
 
 Qt::ItemFlags TodoModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid())
+    if (!index.isValid() )
         return Qt::NoItemFlags;
 
-    return Qt::ItemIsEditable; // FIXME: Implement me!
+    return Qt::ItemIsEditable;
 }
 
 QHash<int, QByteArray> TodoModel::roleNames() const
@@ -55,4 +69,35 @@ QHash<int, QByteArray> TodoModel::roleNames() const
     names[DoneRole] = "done";
     names[DescriptionRole] ="description";
     return names;
+}
+
+TodoList *TodoModel::list() const
+{
+    return mList;
+}
+
+void TodoModel::setList(TodoList *list)
+{
+    beginResetModel();
+    if(mList)
+        mList->disconnect(this);
+
+    mList = list;
+
+    if(mList){
+        connect(mList, &TodoList::preItemAppended, this, [=]() {
+            const int index = mList->items().size();
+            beginInsertRows(QModelIndex(), index, index);
+        });
+        connect(mList, &TodoList::postItemAppended, this, [=]() {
+            endInsertRows();
+        });
+        connect(mList, &TodoList::preItemRemoved, this, [=](int index) {
+            beginRemoveRows(QModelIndex(), index, index);
+        });
+        connect(mList, &TodoList::postItemRemoved, this, [=]() {
+            endRemoveRows();
+        });
+    }
+    endResetModel();
 }
