@@ -11,8 +11,11 @@ Frame {
 
         model: 100
         delegate: RowLayout {
+            width: parent.width
             CheckBox {}
-            TextField {}
+            TextField {
+                Layout.fillWidth: true
+            }
 
         }
 
