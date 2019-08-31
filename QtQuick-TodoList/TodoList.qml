@@ -10,7 +10,9 @@ Frame {
         implicitHeight: 250
         clip: true
 
-        model: TodoModel {}
+        model: TodoModel {
+            list: todoList
+        }
 
         delegate: RowLayout {
             width: parent.width

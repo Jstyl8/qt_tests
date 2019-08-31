@@ -15,10 +15,11 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<TodoList>("Todo", 1, 0, "TodoList",
                                          QStringLiteral("TodoList should not be created in QML"));
 
-    TodoList todoList;
-
     QQmlApplicationEngine engine;
+
+    TodoList todoList;
     engine.rootContext()->setContextProperty(QStringLiteral("todoList"), &todoList);
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
