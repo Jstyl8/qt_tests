@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Hello.qml</file>
+        <file>HelloForm.ui.qml</file>
+        <file>main.qml</file>
+        <file>MyHello.qml</file>
+    </qresource>
+</RCC>
