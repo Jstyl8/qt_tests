@@ -9,7 +9,7 @@ Window {
 
     Rectangle {
         id: page
-        width: 320; height: 480
+        width: parent.width; height: parent.height
         color: "lightgray"
 
         Text {
